@@ -1,21 +1,66 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Text;
 using XMLGenerator.Models;
+using XMLGenerator.Services;
 
 namespace XMLGenerator.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IXmlProcessor xmlProcessor;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IXmlProcessor xmlProcessor)
         {
             _logger = logger;
+            this.xmlProcessor = xmlProcessor;
         }
 
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Index(GenerateXmlInputModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            if (model.DtdFile == null)
+            {
+                ModelState.AddModelError(nameof(GenerateXmlInputModel.DtdFile), "Please upload valid dtd file!");
+                return View(model);
+            }
+            if (model.DtdFile != null && !model.DtdFile.FileName.EndsWith(".dtd"))
+            {
+                ModelState.AddModelError(nameof(GenerateXmlInputModel.DtdFile), "Please upload valid dtd file, the file extension should be .dtd!");
+                return View(model);
+            }
+
+            var xml = this.xmlProcessor.GenerateXml(model.DtdFile!, model.WikipediaLink!);
+
+            return RedirectToAction(nameof(Edit), new GeneratedXmlViewModel(xml));
+        }
+
+        public IActionResult Edit(GeneratedXmlViewModel model)
+        {
+            return View(model);
+        }
+
+        [HttpPost()]
+        public IActionResult EditHandler(GeneratedXmlViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            // TODO validate it is valid xml file based on the dtd schema
+
+            return File(Encoding.ASCII.GetBytes(model.Xml!), "application/octet-stream", "wikipedia_page.xml");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

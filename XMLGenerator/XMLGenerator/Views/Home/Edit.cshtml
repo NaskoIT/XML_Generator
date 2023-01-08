@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model GeneratedXmlViewModel
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the edit page</h1>
+</div>
+
+<div class="row">
+    <form method="post" asp-action="EditHandler">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group mb-3">
+            <label asp-for="Xml" class="mb-1">XML</label>
+            <textarea asp-for="Xml" class="form-control" rows="15"></textarea>
+            <span asp-validation-for="Xml" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Download</button>
+        </div>
+    </form>
+</div>
+
+

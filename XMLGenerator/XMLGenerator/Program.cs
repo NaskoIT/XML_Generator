@@ -1,7 +1,10 @@
+using XMLGenerator.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IXmlProcessor, XmlProcessor>();
 
 var app = builder.Build();
 
