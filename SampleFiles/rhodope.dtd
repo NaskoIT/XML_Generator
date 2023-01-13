@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!ELEMENT Rhodope_Mountains
+(Name_and_mythology, Geography, History, People, Economy, Honour, See_also)>
+<!ELEMENT Name_and_mythology (#PCDATA)>
+<!ELEMENT Geography (Climate, Waters, Subdivision)>
+<!ELEMENT Climate (#PCDATA)>
+<!ELEMENT Waters (#PCDATA)>
+<!ELEMENT Subdivision (Western_Rhodopes, Eastern_Rhodopes)>
+<!ELEMENT Western_Rhodopes (#PCDATA)>
+<!ELEMENT Eastern_Rhodopes (#PCDATA)>
+<!ELEMENT History (#PCDATA)>
+<!ELEMENT People (#PCDATA)>
+<!ELEMENT Economy (#PCDATA)>
+<!ELEMENT Honour (#PCDATA)>
+<!ELEMENT See_also (#PCDATA)>

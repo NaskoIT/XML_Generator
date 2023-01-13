@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT Telerik
+(Overview, Growth, Products_and_technologies, Open-Source_software_products)>
+<!ELEMENT Overview (#PCDATA)>
+<!ELEMENT Growth (#PCDATA)>
+<!ELEMENT Products_and_technologies (Controls_Suite, Cloud_development, Application_lifecycle_management, Content_management)>
+<!ELEMENT Controls_Suite (#PCDATA)>
+<!ELEMENT Cloud_development (#PCDATA)>
+<!ELEMENT Application_lifecycle_management (#PCDATA)>
+<!ELEMENT Content_management (#PCDATA)>
+<!ELEMENT Open-Source_software_products (#PCDATA)>

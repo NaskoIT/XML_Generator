@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Telerik SYSTEM "./telerik.dtd">
+<Telerik>
+  <Overview>
+    Telerik was founded in 2002 by four graduates of American University in Bulgaria and Technical University of Sofia. Initially focused on 
+    providing outsourced software development for foreign and Bulgarian companies,[5] the company shifted its direction to the creation of 
+    application development tools. Its first product, RAD editor (rapid application development),[6] was a web page editor designed to support the 
+    then recently launched Microsoft technology, ASP.NET. The company then expanded its offerings to include user interface (UI) navigation controls, 
+    and the Telerik Sitefinity content management system a few years later.[7]
+    Based upon developer interaction, Telerik developed tools targeted to support other .NET technologies, such as ASP.NET AJAX, ASP.NET MVC, WPF, Silverlight and Windows/Windows Phone.[8] Telerik introduced support for HTML5 and JavaScript in 2011 with its Kendo UI product,[9] coinciding with expected industry growth in mobile adoption.[10]
+</Overview>
+  <Growth>
+    Company growth came by way of hiring in Bulgaria, as well as expansion and acquisition abroad:
+    2008 Germany: Acquired Vanatec GmbH, an enterprise-grade ORM provider
+    2010 USA: Merged with ArtOfTest, adding the Test Studio product[13]
+    2010 Canada: Acquired TeamPulse, via a partnership deal with Imaginet[14]
+    2011 UK and Australia: Expansion[15]
+    2012 USA: Acquired Fiddler, a web debugging proxy[16]
+    2013 Denmark: Acquired EQATEC Analytics, a software analytics suite[17]As of 2013, Telerik has 800 employees in 11 offices,[18] 
+    led by co-CEOs Vasil Terziev and Svetozar Georgiev,[19] and Chief Product Officer Aaron Mahimainathan.[20]On October 22, 2014 Progress 
+    Software announced its acquisition of Telerik, for $262.5 million.[4]
+</Growth>
+<Products_and_technologies>
+  <Controls_Suite>
+    DevCraft: A collection of UI controls and widgets with versions for use with applications developed on the .NET platform (ASP.NET AJAX, 
+    ASP.NET MVC and WPF), HTML5 (Kendo UI) or through Xamarin for mobile devices.
+  </Controls_Suite>
+  <Cloud_development>
+    Telerik Platform: An integrated group of SaaS  products that together provide the ability to plan, develop, deploy and measure 
+    cross-platform and mobile applications via the cloud. On 10 May 2018, Telerik Platform will be retired.[22]
+  </Cloud_development>
+  <Application_lifecycle_management>
+    TeamPulse: An agile development project management tool
+    Test Studio: A tool that helps software developers implement testing protocols.
+  </Application_lifecycle_management>
+  <Content_management>
+    Sitefinity: A web content management system (CMS), used to create and manage websites accessed via desktop or mobile devices.
+  </Content_management>
+</Products_and_technologies>
+<Open-Source_software_products>
+  For most of its products, Telerik takes a proprietary approach to its development process. However, it also has several products that are 
+  free and open source: NativeScript, Kendo UI Core,[23] Data Access, Just Decompile and the “Sitefinity Project Feather[24]” Initiative.
+</Open-Source_software_products>
+</Telerik>
