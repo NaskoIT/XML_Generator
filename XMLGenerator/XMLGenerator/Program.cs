@@ -5,6 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IXmlProcessor, XmlProcessor>();
+builder.Services.AddTransient<IWebDocumentParser, WebDocumentParser>();
 
 var app = builder.Build();
 

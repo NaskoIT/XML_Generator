@@ -1,7 +1,12 @@
-﻿namespace XMLGenerator.Services
+﻿using System.Text;
+using XMLGenerator.Services.Models;
+
+namespace XMLGenerator.Services
 {
     public interface IXmlProcessor
     {
-        string GenerateXml(IFormFile file, string wikipediaLink);
+        MemoryStream? GenerateXml(ParsedDocument? document);
+
+        StringBuilder ValidateXml(MemoryStream stream);
     }
 }

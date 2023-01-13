@@ -10,11 +10,16 @@ namespace XMLGenerator.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IXmlProcessor xmlProcessor;
+        private readonly IWebDocumentParser webDocumentParser;
 
-        public HomeController(ILogger<HomeController> logger, IXmlProcessor xmlProcessor)
+        public HomeController(
+            ILogger<HomeController> logger, 
+            IXmlProcessor xmlProcessor,
+            IWebDocumentParser webDocumentParser)
         {
             _logger = logger;
             this.xmlProcessor = xmlProcessor;
+            this.webDocumentParser = webDocumentParser;
         }
 
         public IActionResult Index()
@@ -23,10 +28,15 @@ namespace XMLGenerator.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(GenerateXmlInputModel model)
+        public async Task<IActionResult> Index(GenerateXmlInputModel model)
         {
             if (!ModelState.IsValid)
             {
+                return View(model);
+            }
+            if (model.WikipediaLink == null || !model.WikipediaLink.StartsWith("https://en.wikipedia"))
+            {
+                ModelState.AddModelError(nameof(GenerateXmlInputModel.WikipediaLink), "Please, type a valid url address to wikipedia page!");
                 return View(model);
             }
             if (model.DtdFile == null)
@@ -40,9 +50,11 @@ namespace XMLGenerator.Controllers
                 return View(model);
             }
 
-            var xml = this.xmlProcessor.GenerateXml(model.DtdFile!, model.WikipediaLink!);
+            var document = await this.webDocumentParser.Parse(model.WikipediaLink!);
+            using var xml = this.xmlProcessor.GenerateXml(document);
+            var text = Encoding.UTF8.GetString(xml!.ToArray());
 
-            return RedirectToAction(nameof(Edit), new GeneratedXmlViewModel(xml));
+            return RedirectToAction(nameof(Edit), new GeneratedXmlViewModel(text));
         }
 
         public IActionResult Edit(GeneratedXmlViewModel model)
@@ -53,12 +65,11 @@ namespace XMLGenerator.Controllers
         [HttpPost()]
         public IActionResult EditHandler(GeneratedXmlViewModel model)
         {
+            // ModelState.AddModelError(string.Empty, "The xml content is not compatible with the DTD schema!");
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View(nameof(Edit), model);
             }
-
-            // TODO validate it is valid xml file based on the dtd schema
 
             return File(Encoding.ASCII.GetBytes(model.Xml!), "application/octet-stream", "wikipedia_page.xml");
         }
