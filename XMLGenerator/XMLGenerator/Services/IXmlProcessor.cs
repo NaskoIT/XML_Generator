@@ -5,7 +5,7 @@ namespace XMLGenerator.Services
 {
     public interface IXmlProcessor
     {
-        MemoryStream? GenerateXml(ParsedDocument? document);
+        MemoryStream? GenerateXml(ParsedDocument? document, string dtdFileName);
 
         StringBuilder ValidateXml(MemoryStream stream);
     }

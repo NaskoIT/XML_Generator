@@ -6,14 +6,14 @@ namespace XMLGenerator.Services
 {
     public class XmlProcessor : IXmlProcessor
     {
-        public MemoryStream? GenerateXml(ParsedDocument? document)
+        public MemoryStream? GenerateXml(ParsedDocument? document, string dtdFileName)
         {
             if (document == null)
             {
                 return null;
             }
 
-            var xmlDocument = BuildXmlDocument(document.Sections, string.IsNullOrEmpty(document.Title) ? "root" : document.Title);
+            var xmlDocument = BuildXmlDocument(document.Sections, string.IsNullOrEmpty(document.Title) ? "root" : document.Title, dtdFileName);
             using var stream = new MemoryStream();
             xmlDocument.Save(stream);
             return stream;
@@ -31,19 +31,27 @@ namespace XMLGenerator.Services
             settings.ValidationEventHandler += (sender, args) => messages.AppendLine(args.Message);
             var reader = XmlReader.Create(stream, settings);
 
-            while (reader.Read())
+            try
             {
+                while (reader.Read())
+                {
+                }
+            }
+            catch (Exception ex)
+            {
+                messages.AppendLine(ex.Message);
             }
 
             return messages;
         }
 
-        static XmlDocument BuildXmlDocument(ICollection<DocumentSection> sections, string title)
+        static XmlDocument BuildXmlDocument(ICollection<DocumentSection> sections, string title, string dtd)
         {
             XmlDocument doc = new XmlDocument();
             XmlDeclaration xmlDeclaration = doc.CreateXmlDeclaration("1.0", "UTF-8", null);
             XmlElement root = doc.DocumentElement!;
             doc.InsertBefore(xmlDeclaration, root);
+            doc.AppendChild(doc.CreateDocumentType(title, null, dtd, null));
 
             XmlElement mainElement = doc.CreateElement(string.Empty, ToXmlTag(title), string.Empty);
             doc.AppendChild(mainElement);

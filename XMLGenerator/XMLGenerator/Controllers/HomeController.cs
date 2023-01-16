@@ -11,15 +11,18 @@ namespace XMLGenerator.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IXmlProcessor xmlProcessor;
         private readonly IWebDocumentParser webDocumentParser;
+        private readonly IFileService fileService;
 
         public HomeController(
             ILogger<HomeController> logger, 
             IXmlProcessor xmlProcessor,
-            IWebDocumentParser webDocumentParser)
+            IWebDocumentParser webDocumentParser,
+            IFileService fileService)
         {
             _logger = logger;
             this.xmlProcessor = xmlProcessor;
             this.webDocumentParser = webDocumentParser;
+            this.fileService = fileService;
         }
 
         public IActionResult Index()
@@ -51,7 +54,13 @@ namespace XMLGenerator.Controllers
             }
 
             var document = await this.webDocumentParser.Parse(model.WikipediaLink!);
-            using var xml = this.xmlProcessor.GenerateXml(document);
+
+            using var stream = new MemoryStream();
+            model.DtdFile!.CopyTo(stream);
+            var dtdText = Encoding.UTF8.GetString(stream.ToArray());
+            string dtdFileName = fileService.Save(dtdText, "dtd");
+
+            using var xml = this.xmlProcessor.GenerateXml(document, dtdFileName);
             var text = Encoding.UTF8.GetString(xml!.ToArray());
 
             return RedirectToAction(nameof(Edit), new GeneratedXmlViewModel(text));
@@ -71,7 +80,19 @@ namespace XMLGenerator.Controllers
                 return View(nameof(Edit), model);
             }
 
-            return File(Encoding.ASCII.GetBytes(model.Xml!), "application/octet-stream", "wikipedia_page.xml");
+            string xmlFileName = this.fileService.Save(model.Xml!, ".xml");
+            using var stream = new MemoryStream(Encoding.UTF8.GetBytes(model.Xml!));
+            var errors = this.xmlProcessor.ValidateXml(stream);
+            if (errors.Length > 0)
+            {
+                const string error = "The XML file is not compatible with the DTD schema.";
+                ModelState.AddModelError(nameof(GeneratedXmlViewModel.Xml), error + " " + errors.ToString());
+                return View(nameof(Edit), model);
+            }
+            else
+            {
+                return File(Encoding.ASCII.GetBytes(model.Xml!), "application/octet-stream", "wikipedia_page.xml");
+            }
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
